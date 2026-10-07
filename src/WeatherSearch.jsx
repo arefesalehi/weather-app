@@ -47,7 +47,6 @@ const WeatherSearch = () => {
     console.log('res=>,',response);
 
     setWeather({
-
       city: response.data.name,
       temperature: response.data.main.temp,
       wind: response.data.wind.speed,
@@ -93,19 +92,22 @@ const WeatherSearch = () => {
         {error && <p className="mt-3 text-red-600">{error}</p>}
 
         <div className="flex flex-col mt-5 text-gray-400">
-          <p className="font-bold text-xl">{weather.city}</p>
+          <p className="font-bold text-xl">{weather.city }</p>
           <p>friday 12:05</p>
           <p>cloudy</p>
         </div>
 
         <div className="flex justify-between items-center mt-10">
           <span className="flex items-center gap-2">
-            <canvas ref={mainIconRef} width="64" height="64" />
-            14c
+            {weather.icon && (
+              <img src={weather.icon} alt={weather.description} />
+            )}
+            {weather.name === 'tehran' && weather.temperature }
+            {Math.round(weather.temperature )}c
           </span>
           <span className="flex flex-col pl-10 w-1/2">
-            <p>precit :80%</p>
-            <p>wind:85km/h</p>
+            <p>humidity :{weather.humidity}</p>
+            <p>wind:{weather.wind}</p>
           </span>
         </div>
 
@@ -125,7 +127,7 @@ const WeatherSearch = () => {
           ))}
         </div>
       </div>
-      <h1 className="mt-10 pl-10">repository github link : sdfsfs</h1>
+      <h1 className="mt-10 pl-10"> github link is :  <a className="text-blue-500" href="https://github.com/arefesalehi/weather-app">here</a> </h1>
     </>
   );
 };
