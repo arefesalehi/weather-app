@@ -16,7 +16,7 @@ const WeatherSearch = () => {
   const [loaded, setLoaded] = useState(false);
   const [weather, setWeather] = useState({});
   const [error, setError] = useState("");
-
+const [unit, setUnit] = useState("C");
   useEffect(() => {
     const Skycons = createSkycons(window);
     const skycons = new Skycons({
@@ -56,6 +56,22 @@ const WeatherSearch = () => {
     });
   }
 
+
+   useEffect(() => {
+    const apiKey = "874edff40504a9c9a744c7e4498f6f95";
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Tehran&appid=${apiKey}&units=metric`;
+    axios
+      .get(apiUrl)
+      .then(displayWeather)
+      .catch(() => {
+        setLoaded(false);
+        setError("Could not load Tehran weather.");
+      });
+  }, []);
+
+const convertHandler = () => {
+  setUnit((unit) => (unit === "C" ? "F" : "C"));
+};
 
   const submitHandler=(e)=>{
     e.preventDefault()
@@ -103,7 +119,15 @@ const WeatherSearch = () => {
               <img src={weather.icon} alt={weather.description} />
             )}
             {weather.name === 'tehran' && weather.temperature }
-            {Math.round(weather.temperature )}c
+            {unit === "C"
+  ? Math.round(weather.temperature)
+  : Math.round((weather.temperature * 9) / 5 + 32)
+}°{unit} | <a
+  onClick={convertHandler}
+  className="text-blue-600 cursor-pointer"
+>
+  °{unit === "C" ? "F" : "C"}
+</a>
           </span>
           <span className="flex flex-col pl-10 w-1/2">
             <p>humidity :{weather.humidity}</p>
@@ -111,7 +135,7 @@ const WeatherSearch = () => {
           </span>
         </div>
 
-        <div className="flex justify-between gap-4 mt-10">
+        {/* <div className="flex justify-between gap-4 mt-10">
           {forecast.map((item, index) => (
             <div className="flex flex-col items-center" key={item.day}>
               <p>{item.day}</p>
@@ -125,7 +149,7 @@ const WeatherSearch = () => {
               <p>{item.temp}</p>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
       <h1 className="mt-10 pl-10"> github link is :  <a className="text-blue-500" href="https://github.com/arefesalehi/weather-app">here</a> </h1>
     </>
